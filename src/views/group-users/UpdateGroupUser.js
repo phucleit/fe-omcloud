@@ -25,6 +25,7 @@ const LIST_ROLES = `${config.API_URL}/functions/list-roles`;
 
 const parent_id_tai_khoan = '667460e3d19aa9fcecc69fa6';
 const parent_id_dich_vu = '667463d04bede188dfb46d75';
+const parent_id_loai_dich_vu = '667463d04bede188dfb4610a';
 const parent_id_cong_trinh = '667463d04bede188dfb46d7a';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -70,6 +71,7 @@ export default function UpdateGroupUser() {
 
   const filteredItemsTaiKhoan = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_tai_khoan);
   const filteredItemsDichVu = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_dich_vu);
+  const filteredItemsLoaiDichVu = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_loai_dich_vu);
   const filteredItemsCongTrinh = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_cong_trinh);
 
   return (
@@ -132,6 +134,22 @@ export default function UpdateGroupUser() {
               <Box component="section">
                 <FormGroup>
                   {filteredItemsDichVu.map((item) => (
+                    <FormControlLabel
+                      key={item._id}
+                      control={
+                        <Checkbox checked={checkedItems.includes(item._id)} disabled={!checkedItems.includes(item._id)} name={item._id} />
+                      }
+                      label={item.name}
+                    />
+                  ))}
+                </FormGroup>
+              </Box>
+            </Grid>
+            <Grid item xs={3}>
+              <Item>Loại dịch vụ</Item>
+              <Box component="section">
+                <FormGroup>
+                  {filteredItemsLoaiDichVu.map((item) => (
                     <FormControlLabel
                       key={item._id}
                       control={
