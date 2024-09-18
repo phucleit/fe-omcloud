@@ -18,6 +18,13 @@ const services = {
           type: 'item',
           url: '/dashboard/services/list-services',
           breadcrumbs: false
+        },
+        {
+          id: 'list-plan-services',
+          title: 'Danh sách gói dịch vụ',
+          type: 'item',
+          url: '/dashboard/plan-services/list-plan-services',
+          breadcrumbs: false
         }
       ]
     }

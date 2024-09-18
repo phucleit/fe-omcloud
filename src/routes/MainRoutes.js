@@ -18,6 +18,11 @@ const ListGroupUser = Loadable(lazy(() => import('views/group-users/ListGroupUse
 const AddGroupUser = Loadable(lazy(() => import('views/group-users/AddGroupUser')));
 const UpdateGroupUser = Loadable(lazy(() => import('views/group-users/UpdateGroupUser')));
 
+// plan services
+const ListPlanServices = Loadable(lazy(() => import('views/plan-services/ListPlanServices')));
+const AddPlanServices = Loadable(lazy(() => import('views/plan-services/AddPlanServices')));
+const UpdatePlanServices = Loadable(lazy(() => import('views/plan-services/UpdatePlanServices')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -28,6 +33,8 @@ const MainRoutes = {
       path: '/dashboard',
       element: <DashboardDefault />
     },
+
+    // users
     {
       path: 'users',
       children: [
@@ -54,6 +61,25 @@ const MainRoutes = {
         {
           path: 'update-group-users/:id',
           element: <UpdateGroupUser />
+        }
+      ]
+    },
+
+    // plan services
+    {
+      path: 'plan-services',
+      children: [
+        {
+          path: 'list-plan-services',
+          element: <ListPlanServices />
+        },
+        {
+          path: 'add-plan-services',
+          element: <AddPlanServices />
+        },
+        {
+          path: 'update-plan-services/:id',
+          element: <UpdatePlanServices />
         }
       ]
     }
