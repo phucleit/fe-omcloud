@@ -60,7 +60,7 @@ export default function AddPlanServices() {
   const handleAddPlanServices = (e) => {
     e.preventDefault();
     if (name == '') {
-      alert('Vui lòng nhập tên gói!');
+      alert('Vui lòng nhập tên loại dịch vụ!');
       return;
     }
 
@@ -86,14 +86,14 @@ export default function AddPlanServices() {
             <Grid item xs={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
-                  <InputLabel>Tên gói dịch vụ</InputLabel>
+                  <InputLabel>Tên loại dịch vụ</InputLabel>
                   <Input
                     id="name"
                     name="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required={true}
-                    placeholder="Nhập tên gói dịch vụ..."
+                    placeholder="Nhập tên loại dịch vụ..."
                   />
                 </FormControl>
               </Item>

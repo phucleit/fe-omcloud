@@ -77,7 +77,7 @@ export default function ListPlanServices() {
     }
   };
 
-  const columns = [{ field: 'name', headerName: 'Tên gói dịch vụ', width: 300 }];
+  const columns = [{ field: 'name', headerName: 'Tên loại dịch vụ', width: 300 }];
 
   if (permissionUpdate || permissionDelete) {
     columns.push({

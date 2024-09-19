@@ -33,6 +33,11 @@ const ListStatus = Loadable(lazy(() => import('views/status/ListStatus')));
 const AddStatus = Loadable(lazy(() => import('views/status/AddStatus')));
 const UpdateStatus = Loadable(lazy(() => import('views/status/UpdateStatus')));
 
+// công trình
+const ListProjects = Loadable(lazy(() => import('views/projects/ListProjects')));
+const AddProjects = Loadable(lazy(() => import('views/projects/AddProjects')));
+const UpdateProjects = Loadable(lazy(() => import('views/projects/UpdateProjects')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -128,6 +133,25 @@ const MainRoutes = {
         {
           path: 'update-status/:id',
           element: <UpdateStatus />
+        }
+      ]
+    },
+
+    // công trình
+    {
+      path: 'projects',
+      children: [
+        {
+          path: 'list-projects',
+          element: <ListProjects />
+        },
+        {
+          path: 'add-projects',
+          element: <AddProjects />
+        },
+        {
+          path: 'update-projects/:id',
+          element: <UpdateProjects />
         }
       ]
     }

@@ -51,8 +51,6 @@ export default function Signin() {
       password: password
     };
 
-    console.log(info);
-
     try {
       const res = await fetch(`${LOGIN_USER}`, {
         method: 'POST',

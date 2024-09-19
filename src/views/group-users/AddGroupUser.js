@@ -28,6 +28,7 @@ const parent_id_tai_khoan = '667460e3d19aa9fcecc69fa6';
 const parent_id_dich_vu = '667463d04bede188dfb46d75';
 const parent_id_loai_dich_vu = '667463d04bede188dfb4610a';
 const parent_id_cong_trinh = '667463d04bede188dfb46d7a';
+const parent_id_trang_thai = '667467eb263fb998b9925d36';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -59,6 +60,7 @@ export default function AddGroupUser() {
   const filteredItemsDichVu = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_dich_vu);
   const filteredItemsLoaiDichVu = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_loai_dich_vu);
   const filteredItemsCongTrinh = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_cong_trinh);
+  const filteredItemsTrangThai = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_trang_thai);
 
   const handleChangeGroupUser = (event) => {
     const { name, checked } = event.target;
@@ -173,6 +175,20 @@ export default function AddGroupUser() {
               <Box component="section">
                 <FormGroup>
                   {filteredItemsLoaiDichVu.map((item) => (
+                    <FormControlLabel
+                      key={item._id}
+                      control={<Checkbox checked={checkedItems.includes(item._id)} onChange={handleChangeGroupUser} name={item._id} />}
+                      label={item.name}
+                    />
+                  ))}
+                </FormGroup>
+              </Box>
+            </Grid>
+            <Grid item xs={3}>
+              <Item>Trạng thái</Item>
+              <Box component="section">
+                <FormGroup>
+                  {filteredItemsTrangThai.map((item) => (
                     <FormControlLabel
                       key={item._id}
                       control={<Checkbox checked={checkedItems.includes(item._id)} onChange={handleChangeGroupUser} name={item._id} />}
