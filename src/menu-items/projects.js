@@ -18,6 +18,13 @@ const projects = {
           type: 'item',
           url: '/dashboard/projects/list-projects',
           breadcrumbs: false
+        },
+        {
+          id: 'list-status',
+          title: 'Danh sách trạng thái',
+          type: 'item',
+          url: '/dashboard/status/list-status',
+          breadcrumbs: false
         }
       ]
     }

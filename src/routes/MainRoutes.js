@@ -28,6 +28,11 @@ const ListPlanServices = Loadable(lazy(() => import('views/plan-services/ListPla
 const AddPlanServices = Loadable(lazy(() => import('views/plan-services/AddPlanServices')));
 const UpdatePlanServices = Loadable(lazy(() => import('views/plan-services/UpdatePlanServices')));
 
+// status
+const ListStatus = Loadable(lazy(() => import('views/status/ListStatus')));
+const AddStatus = Loadable(lazy(() => import('views/status/AddStatus')));
+const UpdateStatus = Loadable(lazy(() => import('views/status/UpdateStatus')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -104,6 +109,25 @@ const MainRoutes = {
         {
           path: 'update-plan-services/:id',
           element: <UpdatePlanServices />
+        }
+      ]
+    },
+
+    // status
+    {
+      path: 'status',
+      children: [
+        {
+          path: 'list-status',
+          element: <ListStatus />
+        },
+        {
+          path: 'add-status',
+          element: <AddStatus />
+        },
+        {
+          path: 'update-status/:id',
+          element: <UpdateStatus />
         }
       ]
     }
