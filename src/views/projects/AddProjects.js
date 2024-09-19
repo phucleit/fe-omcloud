@@ -13,13 +13,16 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 import MainCard from 'ui-component/cards/MainCard';
 
 import config from '../../config';
-import { apiGet, apiPost } from '../../utils/formatUtils';
+import { apiGet, apiPost, getRoles } from '../../utils/formatUtils';
 
 const PROJECTS = `${config.API_URL}/projects`;
+const LIST_USERS = `${config.API_URL}/users`;
 const LIST_SERVICES = `${config.API_URL}/services`;
 const LIST_PLAN_SERVICES = `${config.API_URL}/plan-services`;
 const LIST_STATUS = `${config.API_URL}/status`;
@@ -36,17 +39,21 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function AddProjects() {
   let navigate = useNavigate();
 
+  const [dataRoles, setDataRoles] = useState([]);
+  const [permissionAdd, setPermissionAdd] = useState(false);
+
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [representativeName, setRepresentativeName] = useState('');
   const [representativePhone, setRepresentativePhone] = useState('');
   const [representativeMail, setRepresentativeMail] = useState('');
-  const [personInCharge, setPersonInCharge] = useState('');
+  const [userId, setUserId] = useState('');
   const [serviceId, setServiceId] = useState('');
   const [servicePlanId, setServicePlanId] = useState('');
   const [statusId, setStatusId] = useState('');
   const [maintenancePeriodId, setMaintenancePeriodId] = useState('');
 
+  const [listUser, setListUser] = useState([]);
   const [listServices, setListServices] = useState([]);
   const [listPlanServices, setListPlanServices] = useState([]);
   const [listStatus, setListStatus] = useState([]);
@@ -55,12 +62,35 @@ export default function AddProjects() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    loadListRoles();
+    loadListUsers();
     loadListServices();
     loadListPlanServices();
     loadListStatus();
     loadListMaintenancePeriod();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (dataRoles.length > 0) {
+      const filteredAdd = dataRoles.filter((role_add) => role_add.function_id === '667463d04bede188dfb46d7b');
+      if (filteredAdd.length > 0) {
+        setPermissionAdd(true);
+      } else {
+        setPermissionAdd(false);
+      }
+    }
+  }, [dataRoles]);
+
+  const loadListRoles = async () => {
+    const result = await getRoles();
+    setDataRoles(result.data);
+  };
+
+  const loadListUsers = async () => {
+    const result = await apiGet(`${LIST_USERS}`);
+    setListUser(result.data);
+  };
 
   const loadListServices = async () => {
     const result = await apiGet(`${LIST_SERVICES}`);
@@ -95,7 +125,7 @@ export default function AddProjects() {
       representative_name: representativeName,
       representative_phone: representativePhone,
       representative_mail: representativeMail,
-      person_in_charge: personInCharge,
+      user_id: [userId],
       service_id: serviceId,
       service_plan_id: servicePlanId,
       status_id: statusId,
@@ -112,7 +142,7 @@ export default function AddProjects() {
       .catch((error) => console.log(error));
   };
 
-  return (
+  return permissionAdd ? (
     <>
       <MainCard title="Thêm mới">
         <Box component="form" sx={{ flexGrow: 1 }} noValidate autoComplete="off">
@@ -195,15 +225,28 @@ export default function AddProjects() {
             <Grid item xs={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
-                  <InputLabel>Nhân sự phụ trách</InputLabel>
-                  <Input
+                  <Autocomplete
+                    multiple
+                    id="personInCharge"
+                    options={listUser}
+                    getOptionLabel={(option) => option.display_name}
+                    filterSelectedOptions
+                    onChange={(event, value) => {
+                      const selectedIds = value.map((option) => option._id);
+                      setUserId(selectedIds);
+                    }}
+                    renderInput={(params) => (
+                      <TextField variant="standard" {...params} label="Nhân sự phụ trách" placeholder="Nhân sự phụ trách..." />
+                    )}
+                  />
+                  {/* <Input
                     id="personInCharge"
                     name="personInCharge"
                     value={personInCharge}
                     onChange={(e) => setPersonInCharge(e.target.value)}
                     required={true}
                     placeholder="Nhập nhân sự phụ trách..."
-                  />
+                  /> */}
                 </FormControl>
               </Item>
             </Grid>
@@ -287,5 +330,7 @@ export default function AddProjects() {
         <Alert severity="success">Thêm thành công!</Alert>
       </Snackbar>
     </>
+  ) : (
+    <div>Bạn không có quyền truy cập!</div>
   );
 }
