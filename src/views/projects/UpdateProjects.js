@@ -98,7 +98,7 @@ export default function UpdateProjects() {
     setRepresentativeName(result.data.representative_name);
     setRepresentativePhone(result.data.representative_phone);
     setRepresentativeMail(result.data.representative_mail);
-    setUserId(result.data.user_id._id);
+    setUserId(result.data.user_id);
     setServiceId(result.data.service_id._id);
     setServicePlanId(result.data.service_plan_id._id);
     setStatusId(result.data.status_id._id);
@@ -131,7 +131,7 @@ export default function UpdateProjects() {
   };
 
   const handleUserChange = (event, value) => {
-    setSelectedUsers(
+    setUserId(
       value.map((option) => ({
         _id: option._id,
         display_name: option.display_name
@@ -292,8 +292,8 @@ export default function UpdateProjects() {
                     id="userId"
                     name="userId"
                     options={listUser}
-                    // value={userId}
-                    getOptionLabel={(option) => option.display_name}
+                    value={listUser.filter((user) => Array.isArray(userId) && userId.some((user2) => user2._id === user._id))}
+                    getOptionLabel={(option) => option.display_name || ''}
                     filterSelectedOptions
                     onChange={handleUserChange}
                     renderInput={(params) => (
