@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 import { styled } from '@mui/material/styles';
@@ -19,7 +19,7 @@ import TextField from '@mui/material/TextField';
 import MainCard from 'ui-component/cards/MainCard';
 
 import config from '../../config';
-import { apiGet, apiPost, getRoles } from '../../utils/formatUtils';
+import { apiGet, apiGetById, apiUpdate, getRoles } from '../../utils/formatUtils';
 
 const PROJECTS = `${config.API_URL}/projects`;
 const LIST_USERS = `${config.API_URL}/users`;
@@ -38,6 +38,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function UpdateProjects() {
   let navigate = useNavigate();
+  const paramId = useParams();
+  const currentId = paramId.id;
 
   const [dataRoles, setDataRoles] = useState([]);
   const [permissionUpdate, setPermissionUpdate] = useState(false);
@@ -47,7 +49,7 @@ export default function UpdateProjects() {
   const [representativeName, setRepresentativeName] = useState('');
   const [representativePhone, setRepresentativePhone] = useState('');
   const [representativeMail, setRepresentativeMail] = useState('');
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState([]);
   const [serviceId, setServiceId] = useState('');
   const [servicePlanId, setServicePlanId] = useState('');
   const [statusId, setStatusId] = useState('');
@@ -63,6 +65,7 @@ export default function UpdateProjects() {
 
   useEffect(() => {
     loadListRoles();
+    loadDetailProjects();
     loadListUsers();
     loadListServices();
     loadListPlanServices();
@@ -86,6 +89,20 @@ export default function UpdateProjects() {
   const loadListRoles = async () => {
     const result = await getRoles();
     setDataRoles(result.data);
+  };
+
+  const loadDetailProjects = async () => {
+    const result = await apiGetById(`${PROJECTS}`, currentId);
+    setName(result.data.name);
+    setAddress(result.data.address);
+    setRepresentativeName(result.data.representative_name);
+    setRepresentativePhone(result.data.representative_phone);
+    setRepresentativeMail(result.data.representative_mail);
+    setUserId(result.data.user_id._id);
+    setServiceId(result.data.service_id._id);
+    setServicePlanId(result.data.service_plan_id._id);
+    setStatusId(result.data.status_id._id);
+    setMaintenancePeriodId(result.data.maintenance_period_id._id);
   };
 
   const loadListUsers = async () => {
@@ -113,27 +130,71 @@ export default function UpdateProjects() {
     setListMaintenancePeriod(result.data);
   };
 
-  const handleAddProjects = (e) => {
+  const handleUserChange = (event, value) => {
+    setSelectedUsers(
+      value.map((option) => ({
+        _id: option._id,
+        display_name: option.display_name
+      }))
+    );
+  };
+
+  const handleUpdateProjects = (e) => {
     e.preventDefault();
     if (name == '') {
       alert('Vui lòng nhập tên công trình!');
       return;
     }
 
-    const addProjects = {
+    if (representativeName == '') {
+      alert('Vui lòng nhập họ tên đại diện!');
+      return;
+    }
+
+    if (representativePhone == '') {
+      alert('Vui lòng nhập điện thoại đại diện!');
+      return;
+    }
+
+    if (representativeMail == '') {
+      alert('Vui lòng nhập email đại diện!');
+      return;
+    }
+
+    if (serviceId == '') {
+      alert('Vui lòng chọn dịch vụ!');
+      return;
+    }
+
+    if (servicePlanId == '') {
+      alert('Vui lòng chọn loại dịch vụ!');
+      return;
+    }
+
+    if (statusId == '') {
+      alert('Vui lòng chọn trạng thái!');
+      return;
+    }
+
+    if (maintenancePeriodId == '') {
+      alert('Vui lòng chọn kỳ bảo trì!');
+      return;
+    }
+
+    const updateProjects = {
       name: name,
       address: address,
       representative_name: representativeName,
       representative_phone: representativePhone,
       representative_mail: representativeMail,
-      user_id: [userId],
+      user_id: userId,
       service_id: serviceId,
       service_plan_id: servicePlanId,
       status_id: statusId,
       maintenance_period_id: maintenancePeriodId
     };
 
-    apiPost(`${PROJECTS}`, addProjects)
+    apiUpdate(`${PROJECTS}`, currentId, updateProjects)
       .then(() => {
         setOpen(true);
         setTimeout(() => {
@@ -228,26 +289,17 @@ export default function UpdateProjects() {
                 <FormControl variant="standard" fullWidth>
                   <Autocomplete
                     multiple
-                    id="personInCharge"
+                    id="userId"
+                    name="userId"
                     options={listUser}
+                    // value={userId}
                     getOptionLabel={(option) => option.display_name}
                     filterSelectedOptions
-                    onChange={(event, value) => {
-                      const selectedIds = value.map((option) => option._id);
-                      setUserId(selectedIds);
-                    }}
+                    onChange={handleUserChange}
                     renderInput={(params) => (
                       <TextField variant="standard" {...params} label="Nhân sự phụ trách" placeholder="Nhân sự phụ trách..." />
                     )}
                   />
-                  {/* <Input
-                    id="personInCharge"
-                    name="personInCharge"
-                    value={personInCharge}
-                    onChange={(e) => setPersonInCharge(e.target.value)}
-                    required={true}
-                    placeholder="Nhập nhân sự phụ trách..."
-                  /> */}
                 </FormControl>
               </Item>
             </Grid>
@@ -320,8 +372,8 @@ export default function UpdateProjects() {
           </Grid>
           <Grid item xs={12}>
             <Item>
-              <Button variant="contained" size="medium" onClick={handleAddProjects}>
-                Thêm mới
+              <Button variant="contained" size="medium" onClick={handleUpdateProjects}>
+                Cập nhật
               </Button>
             </Item>
           </Grid>

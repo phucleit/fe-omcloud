@@ -78,13 +78,60 @@ export default function ListProjects() {
     }
   };
 
-  const columns = [{ field: 'name', headerName: 'Tên trạng thái', width: 300 }];
+  const columns = [
+    {
+      field: 'maintenance_period_id',
+      headerName: 'Kỳ bảo trì',
+      width: 100,
+      renderCell: (params) => {
+        return <span> {params.row.maintenance_period_id.name}</span>;
+      }
+    },
+    { field: 'name', headerName: 'Tên công trình', width: 220 },
+    {
+      field: 'service_plan_id',
+      headerName: 'Loại dịch vụ',
+      width: 150,
+      renderCell: (params) => {
+        return <span>{params.row.service_plan_id.name}</span>;
+      }
+    },
+    {
+      field: 'service_id',
+      headerName: 'Dịch vụ',
+      width: 150,
+      renderCell: (params) => {
+        return <span>{params.row.service_id.name}</span>;
+      }
+    },
+    { field: 'address', headerName: 'Địa điểm', width: 300 },
+    {
+      field: 'status_id',
+      headerName: 'Trạng thái',
+      width: 150,
+      renderCell: (params) => {
+        return <span>{params.row.status_id.name} </span>;
+      }
+    },
+    {
+      field: 'contact',
+      headerName: 'Liên hệ',
+      width: 400,
+      renderCell: (params) => {
+        return (
+          <span>
+            {params.row.representative_name} / {params.row.representative_phone} / {params.row.representative_mail}
+          </span>
+        );
+      }
+    }
+  ];
 
   if (permissionUpdate || permissionDelete) {
-    columns.push({
+    columns.unshift({
       field: 'action',
       headerName: 'Hành động',
-      width: 120,
+      width: 100,
       renderCell: (params) => {
         return (
           <>

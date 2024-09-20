@@ -82,7 +82,7 @@ export default function ListGroupUser() {
   ];
 
   if (permissionUpdate || permissionDelete) {
-    columns.push({
+    columns.unshift({
       field: 'action',
       headerName: 'Hành động',
       width: 120,

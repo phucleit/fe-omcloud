@@ -80,7 +80,7 @@ export default function ListPlanServices() {
   const columns = [{ field: 'name', headerName: 'Tên loại dịch vụ', width: 300 }];
 
   if (permissionUpdate || permissionDelete) {
-    columns.push({
+    columns.unshift({
       field: 'action',
       headerName: 'Hành động',
       width: 120,

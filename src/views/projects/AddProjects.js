@@ -47,7 +47,7 @@ export default function AddProjects() {
   const [representativeName, setRepresentativeName] = useState('');
   const [representativePhone, setRepresentativePhone] = useState('');
   const [representativeMail, setRepresentativeMail] = useState('');
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState([]);
   const [serviceId, setServiceId] = useState('');
   const [servicePlanId, setServicePlanId] = useState('');
   const [statusId, setStatusId] = useState('');
@@ -112,10 +112,54 @@ export default function AddProjects() {
     setListMaintenancePeriod(result.data);
   };
 
+  const handleUserChange = (event, value) => {
+    setUserId(
+      value.map((option) => ({
+        _id: option._id,
+        display_name: option.display_name
+      }))
+    );
+  };
+
   const handleAddProjects = (e) => {
     e.preventDefault();
     if (name == '') {
       alert('Vui lòng nhập tên công trình!');
+      return;
+    }
+
+    if (representativeName == '') {
+      alert('Vui lòng nhập họ tên đại diện!');
+      return;
+    }
+
+    if (representativePhone == '') {
+      alert('Vui lòng nhập điện thoại đại diện!');
+      return;
+    }
+
+    if (representativeMail == '') {
+      alert('Vui lòng nhập email đại diện!');
+      return;
+    }
+
+    if (serviceId == '') {
+      alert('Vui lòng chọn dịch vụ!');
+      return;
+    }
+
+    if (servicePlanId == '') {
+      alert('Vui lòng chọn loại dịch vụ!');
+      return;
+    }
+
+    if (statusId == '') {
+      alert('Vui lòng chọn trạng thái!');
+      return;
+    }
+
+    if (maintenancePeriodId == '') {
+      alert('Vui lòng chọn kỳ bảo trì!');
       return;
     }
 
@@ -125,7 +169,7 @@ export default function AddProjects() {
       representative_name: representativeName,
       representative_phone: representativePhone,
       representative_mail: representativeMail,
-      user_id: [userId],
+      user_id: userId,
       service_id: serviceId,
       service_plan_id: servicePlanId,
       status_id: statusId,
@@ -227,7 +271,18 @@ export default function AddProjects() {
                 <FormControl variant="standard" fullWidth>
                   <Autocomplete
                     multiple
-                    id="personInCharge"
+                    id="userId"
+                    options={listUser}
+                    getOptionLabel={(option) => option.display_name}
+                    filterSelectedOptions
+                    onChange={handleUserChange}
+                    renderInput={(params) => (
+                      <TextField variant="standard" {...params} label="Nhân sự phụ trách" placeholder="Nhân sự phụ trách..." />
+                    )}
+                  />
+                  {/* <Autocomplete
+                    multiple
+                    id="userId"
                     options={listUser}
                     getOptionLabel={(option) => option.display_name}
                     filterSelectedOptions
@@ -238,14 +293,6 @@ export default function AddProjects() {
                     renderInput={(params) => (
                       <TextField variant="standard" {...params} label="Nhân sự phụ trách" placeholder="Nhân sự phụ trách..." />
                     )}
-                  />
-                  {/* <Input
-                    id="personInCharge"
-                    name="personInCharge"
-                    value={personInCharge}
-                    onChange={(e) => setPersonInCharge(e.target.value)}
-                    required={true}
-                    placeholder="Nhập nhân sự phụ trách..."
                   /> */}
                 </FormControl>
               </Item>

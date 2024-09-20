@@ -80,7 +80,7 @@ export default function ListStatus() {
   const columns = [{ field: 'name', headerName: 'Tên trạng thái', width: 300 }];
 
   if (permissionUpdate || permissionDelete) {
-    columns.push({
+    columns.unshift({
       field: 'action',
       headerName: 'Hành động',
       width: 120,
