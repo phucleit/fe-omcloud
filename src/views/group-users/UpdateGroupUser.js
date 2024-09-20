@@ -28,6 +28,7 @@ const parent_id_dich_vu = '667463d04bede188dfb46d75';
 const parent_id_loai_dich_vu = '667463d04bede188dfb4610a';
 const parent_id_cong_trinh = '667463d04bede188dfb46d7a';
 const parent_id_trang_thai = '667467eb263fb998b9925d36';
+const parent_id_bao_cao = '667467eb263fb998b9925d46';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -75,6 +76,7 @@ export default function UpdateGroupUser() {
   const filteredItemsLoaiDichVu = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_loai_dich_vu);
   const filteredItemsCongTrinh = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_cong_trinh);
   const filteredItemsTrangThai = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_trang_thai);
+  const filteredItemsBaoCao = dataFunctions.filter((item) => item.fuction_parent_id === parent_id_bao_cao);
 
   return (
     <>
@@ -184,6 +186,22 @@ export default function UpdateGroupUser() {
               <Box component="section">
                 <FormGroup>
                   {filteredItemsCongTrinh.map((item) => (
+                    <FormControlLabel
+                      key={item._id}
+                      control={
+                        <Checkbox checked={checkedItems.includes(item._id)} disabled={!checkedItems.includes(item._id)} name={item._id} />
+                      }
+                      label={item.name}
+                    />
+                  ))}
+                </FormGroup>
+              </Box>
+            </Grid>
+            <Grid item xs={3}>
+              <Item>Báo cáo</Item>
+              <Box component="section">
+                <FormGroup>
+                  {filteredItemsBaoCao.map((item) => (
                     <FormControlLabel
                       key={item._id}
                       control={
