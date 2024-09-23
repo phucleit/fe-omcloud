@@ -280,20 +280,6 @@ export default function AddProjects() {
                       <TextField variant="standard" {...params} label="Nhân sự phụ trách" placeholder="Nhân sự phụ trách..." />
                     )}
                   />
-                  {/* <Autocomplete
-                    multiple
-                    id="userId"
-                    options={listUser}
-                    getOptionLabel={(option) => option.display_name}
-                    filterSelectedOptions
-                    onChange={(event, value) => {
-                      const selectedIds = value.map((option) => option._id);
-                      setUserId(selectedIds);
-                    }}
-                    renderInput={(params) => (
-                      <TextField variant="standard" {...params} label="Nhân sự phụ trách" placeholder="Nhân sự phụ trách..." />
-                    )}
-                  /> */}
                 </FormControl>
               </Item>
             </Grid>
