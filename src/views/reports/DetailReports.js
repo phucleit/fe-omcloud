@@ -21,6 +21,7 @@ import { apiGet, apiGetById, getCreatedAt } from '../../utils/formatUtils';
 
 const REPORTS = `${config.API_URL}/reports`;
 const LIST_PROJECTS = `${config.API_URL}/projects`;
+const API = `${config.API_URL}`;
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -85,7 +86,7 @@ export default function DetailReports() {
       headerName: 'Hình ảnh',
       width: 300,
       renderCell: (params) => {
-        return <img src={params.row.image} alt="" />;
+        return <img src={`${API}${params.row.image}`} alt="" />;
       }
     },
     { field: 'description', headerName: 'Mô tả công việc', width: 400 }
