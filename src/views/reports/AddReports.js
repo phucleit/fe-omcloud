@@ -1,4 +1,4 @@
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 
@@ -21,10 +21,11 @@ import MainCard from 'ui-component/cards/MainCard';
 
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
+import 'react-clock/dist/Clock.css';
 
 import './styles.css';
 import config from '../../config';
-import { apiGet, apiPostFile, getRoles } from '../../utils/formatUtils';
+import { apiGet, apiPost, getRoles } from '../../utils/formatUtils';
 
 import TableTasks from './form/TableTasks';
 import TableItems from './form/TableItems';
@@ -40,51 +41,14 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary
 }));
 
-function dataURItoBlob(dataURI) {
-  var byteString;
-  if (dataURI.split(',')[0].indexOf('base64') >= 0) {
-    byteString = atob(dataURI.split(',')[1]);
-  } else {
-    byteString = unescape(dataURI.split(',')[1]);
-  }
-
-  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-  var ia = new Uint8Array(byteString.length);
-  for (var i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
-  }
-
-  return new Blob([ia], { type: mimeString });
-}
-
-function createFormData(formData, key, arr) {
-  for (let i = 0; i < arr.length; i++) {
-    for (var j in arr[i]) {
-      let finalKey = key + '[' + i + '][' + j + ']';
-      let data = arr[i][j];
-      if (finalKey === 'tasks[' + i + '][images]') {
-        $(`.editor-wrapper-${i} .editor-image`).each(function (j) {
-          const tmp = finalKey + '[' + j + ']';
-          if ($(this).attr('src') !== placeholder_add_image) {
-            formData.append(tmp, dataURItoBlob($(this).attr('src')));
-          }
-        });
-      } else {
-        formData.append(finalKey, data);
-      }
-    }
-  }
-}
-
 export default function AddReports() {
-  // let navigate = useNavigate();
+  let navigate = useNavigate();
 
   const [dataRoles, setDataRoles] = useState([]);
   const [permissionAdd, setPermissionAdd] = useState(false);
 
   const [code, setCode] = useState('');
-  const [dateOfIssue, setDateOfIssue] = useState('');
+  const [dateOfIssue, setDateOfIssue] = useState(new Date());
   const [timesIssued, setTimesIssued] = useState('');
   const [name, setName] = useState('');
   const [frequency, setFrequency] = useState('');
@@ -128,10 +92,24 @@ export default function AddReports() {
   };
 
   const handleChangeTableTasks = (index, event) => {
+    // const { name, value } = event.target;
+    // const updateTasks = [...tasks];
+    // updateTasks[index][name] = value;
+    // setTasks(updateTasks);
     const { name, value } = event.target;
-    const updateTasks = [...tasks];
-    updateTasks[index][name] = value;
-    setTasks(updateTasks);
+    const updatedTasks = [...tasks];
+
+    if (name === 'image' && value instanceof Blob) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updatedTasks[index].image = reader.result;
+        setTasks(updatedTasks);
+      };
+      reader.readAsDataURL(value);
+    } else {
+      updatedTasks[index][name] = value;
+      setTasks(updatedTasks);
+    }
   };
 
   const deleteTableTasks = (index) => {
@@ -183,35 +161,49 @@ export default function AddReports() {
       return;
     }
 
-    const formDataReport = new FormData();
-    formDataReport.append('code', code);
-    formDataReport.append('date_of_issue', dateOfIssue);
-    formDataReport.append('times_issued', timesIssued);
-    formDataReport.append('name', name);
-    formDataReport.append('frequency', frequency);
-    formDataReport.append('register_test_date', registerTestDate);
-    formDataReport.append('expired_test_date', expiredTestDate);
-    formDataReport.append('project_id', projectId);
-    formDataReport.append('level', level);
-    formDataReport.append('hicon_comment', hiconComment);
-    formDataReport.append('customer_comment', customerComment);
+    // const formDataReport = new FormData();
+    // formDataReport.append('code', code);
+    // formDataReport.append('date_of_issue', dateOfIssue);
+    // formDataReport.append('times_issued', timesIssued);
+    // formDataReport.append('name', name);
+    // formDataReport.append('frequency', frequency);
+    // formDataReport.append('register_test_date', registerTestDate);
+    // formDataReport.append('expired_test_date', expiredTestDate);
+    // formDataReport.append('project_id', projectId);
+    // formDataReport.append('level', level);
+    // formDataReport.append('hicon_comment', hiconComment);
+    // formDataReport.append('customer_comment', customerComment);
 
-    if (tasks.length > 0) {
-      createFormData(formDataReport, 'tasks', tasks);
-    }
-    console.log(tasks);
+    // if (tasks.length > 0) {
+    //   formDataReport.append('tasks', tasks);
+    // }
 
-    if (items.length > 0) {
-      createFormData(formDataReport, 'items', items);
-    }
-    // console.log(items);
+    // if (items.length > 0) {
+    //   formDataReport.append('items', items);
+    // }
 
-    apiPostFile(`${REPORTS}`, formDataReport)
+    const addReports = {
+      code: code,
+      date_of_issue: dateOfIssue,
+      times_issued: timesIssued,
+      name: name,
+      frequency: frequency,
+      register_test_date: registerTestDate,
+      expired_test_date: expiredTestDate,
+      project_id: projectId,
+      tasks: tasks,
+      items: items,
+      level: level,
+      hicon_comment: hiconComment,
+      customer_comment: customerComment
+    };
+
+    apiPost(`${REPORTS}`, addReports)
       .then(() => {
         setOpen(true);
-        // setTimeout(() => {
-        //   navigate('/dashboard/reports/list-reports');
-        // }, 1500);
+        setTimeout(() => {
+          navigate('/dashboard/reports/list-reports');
+        }, 1500);
       })
       .catch((error) => {
         const err = error.response.data;
@@ -240,17 +232,14 @@ export default function AddReports() {
               </Item>
             </Grid>
             <Grid item xs={6}>
+              <Item style={{ paddingTop: '4px' }}>
+                <FormControl variant="standard" fullWidth>
+                  <InputLabel className="customText">Ngày ban hành</InputLabel>
+                </FormControl>
+              </Item>
               <Item>
                 <FormControl variant="standard" fullWidth>
-                  <InputLabel>Ngày ban hành</InputLabel>
-                  <Input
-                    id="dateOfIssue"
-                    name="dateOfIssue"
-                    value={dateOfIssue}
-                    onChange={(e) => setDateOfIssue(e.target.value)}
-                    required={true}
-                    placeholder="Nhập ngày ban hành..."
-                  />
+                  <DateTimePicker locale="vi-VN" onChange={(date) => setDateOfIssue(date)} value={dateOfIssue} />
                 </FormControl>
               </Item>
             </Grid>

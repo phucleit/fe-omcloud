@@ -36,7 +36,6 @@ export default function ListActionLogs() {
   };
 
   const renderListItemText = (item) => {
-    console.log(item);
     const text = `${getCreatedAt(item.createdAt)}: Tài khoản ${item.user_id.display_name} ${item.action} ${item.object}`;
     if (item.link) {
       return (

@@ -2,27 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
-// import Alert from '@mui/material/Alert';
-// import Snackbar from '@mui/material/Snackbar';
-// import { IconEdit } from '@tabler/icons';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import { DataGrid } from '@mui/x-data-grid';
-// import { DeleteOutline } from '@mui/icons-material';
+import { DeleteOutline } from '@mui/icons-material';
+import { IconEdit } from '@tabler/icons';
 
 import MainCard from 'ui-component/cards/MainCard';
 
 import config from '../../config';
-import { apiGet, getRoles } from '../../utils/formatUtils';
-// import { apiGet, apiDelete, getRoles } from '../../utils/formatUtils';
+import { apiGet, apiDelete, getRoles, getCreatedAt } from '../../utils/formatUtils';
 
 const LIST_REPORTS = `${config.API_URL}/reports`;
 
 export default function ListReports() {
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [dataRoles, setDataRoles] = useState([]);
   const [permissionAdd, setPermissionAdd] = useState(false);
-  // const [permissionUpdate, setPermissionUpdate] = useState(false);
-  // const [permissionDelete, setPermissionDelete] = useState(false);
+  const [permissionDelete, setPermissionDelete] = useState(false);
 
   useEffect(() => {
     loadListRoles();
@@ -32,25 +30,18 @@ export default function ListReports() {
   useEffect(() => {
     if (dataRoles.length > 0) {
       const filteredAdd = dataRoles.filter((role_add) => role_add.function_id === '667467eb263fb998b9925d47');
-      // const filteredUpdate = dataRoles.filter((role_update) => role_update.function_id === '667467eb263fb998b9925d3b');
-      // const filteredDelete = dataRoles.filter((role_delete) => role_delete.function_id === '667467eb263fb998b9925d3c');
+      const filteredDelete = dataRoles.filter((role_delete) => role_delete.function_id === '667467eb263fb998b9925e43');
       if (filteredAdd.length > 0) {
         setPermissionAdd(true);
       } else {
         setPermissionAdd(false);
       }
 
-      // if (filteredUpdate.length > 0) {
-      //   setPermissionUpdate(true);
-      // } else {
-      //   setPermissionUpdate(false);
-      // }
-
-      // if (filteredDelete.length > 0) {
-      //   setPermissionDelete(true);
-      // } else {
-      //   setPermissionDelete(false);
-      // }
+      if (filteredDelete.length > 0) {
+        setPermissionDelete(true);
+      } else {
+        setPermissionDelete(false);
+      }
     }
   }, [dataRoles]);
 
@@ -64,43 +55,66 @@ export default function ListReports() {
     setData(result.data);
   };
 
-  // const handleDelete = (id) => {
-  //   if (window.confirm('Bạn có muốn xóa không?')) {
-  //     apiDelete(`${LIST_REPORTS}/`, id)
-  //       .then(() => {
-  //         setOpen(true);
-  //         setData(data.filter((item) => item._id !== id));
-  //         setTimeout(() => {
-  //           setOpen(false);
-  //         }, 1100);
-  //       })
-  //       .catch((error) => console.log(error));
-  //   }
-  // };
+  const handleDelete = (id) => {
+    if (window.confirm('Bạn có muốn xóa không?')) {
+      apiDelete(`${LIST_REPORTS}/`, id)
+        .then(() => {
+          setOpen(true);
+          setData(data.filter((item) => item._id !== id));
+          setTimeout(() => {
+            setOpen(false);
+          }, 1100);
+        })
+        .catch((error) => console.log(error));
+    }
+  };
 
-  const columns = [{ field: 'name', headerName: 'Tên trạng thái', width: 300 }];
+  const columns = [
+    { field: 'code', headerName: 'Mã hiệu', width: 120 },
+    { field: 'times_issued', headerName: 'Lần ban hành', width: 150 },
+    { field: 'name', headerName: 'Tên báo cáo', width: 300 },
+    {
+      field: 'project_id',
+      headerName: 'Tên công trình',
+      width: 300,
+      renderCell: (params) => {
+        return <span> {params.row.project_id.name}</span>;
+      }
+    },
+    {
+      field: 'test_date',
+      headerName: 'Ngày kiểm tra',
+      width: 270,
+      renderCell: (params) => {
+        return (
+          <span>
+            Từ ngày {getCreatedAt(params.row.register_test_date)} <br /> Đến ngày {getCreatedAt(params.row.expired_test_date)}
+          </span>
+        );
+      }
+    },
+    { field: 'createdAt', headerName: 'Ngày tạo', valueGetter: (params) => getCreatedAt(params.row.createdAt), width: 180 }
+  ];
 
-  // if (permissionUpdate || permissionDelete) {
-  //   columns.unshift({
-  //     field: 'action',
-  //     headerName: 'Hành động',
-  //     width: 120,
-  //     renderCell: (params) => {
-  //       return (
-  //         <>
-  //           {permissionUpdate && (
-  //             <Link to={'/dashboard/reports/update-reports/' + params.row._id}>
-  //               <IconEdit />
-  //             </Link>
-  //           )}
-  //           {permissionDelete && (
-  //             <DeleteOutline style={{ cursor: 'pointer', color: '#ff6666' }} onClick={() => handleDelete(params.row._id)} />
-  //           )}
-  //         </>
-  //       );
-  //     }
-  //   });
-  // }
+  if (permissionDelete) {
+    columns.unshift({
+      field: 'action',
+      headerName: 'Hành động',
+      width: 120,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={'/dashboard/reports/detail-reports/' + params.row._id}>
+              <IconEdit />
+            </Link>
+            {permissionDelete && (
+              <DeleteOutline style={{ cursor: 'pointer', color: '#ff6666' }} onClick={() => handleDelete(params.row._id)} />
+            )}
+          </>
+        );
+      }
+    });
+  }
 
   return (
     <>
@@ -133,9 +147,9 @@ export default function ListReports() {
           ''
         )}
       </MainCard>
-      {/* <Snackbar open={open} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={1000}>
+      <Snackbar open={open} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={1000}>
         <Alert severity="success">Xóa thành công!</Alert>
-      </Snackbar> */}
+      </Snackbar>
     </>
   );
 }

@@ -21,6 +21,7 @@
     "framer-motion": "^6.3.16",
     "js-cookie": "^3.0.5",
     "material-ui-popup-state": "^4.0.1",
+    "painterro": "^1.2.87",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
