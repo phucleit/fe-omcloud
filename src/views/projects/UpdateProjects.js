@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -15,11 +16,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { DataGrid } from '@mui/x-data-grid';
+import { IconEdit } from '@tabler/icons';
 
 import MainCard from 'ui-component/cards/MainCard';
 
 import config from '../../config';
-import { apiGet, apiGetById, apiUpdate, getRoles } from '../../utils/formatUtils';
+import { apiGet, apiGetById, apiUpdate, getRoles, getCreatedAt } from '../../utils/formatUtils';
 
 const PROJECTS = `${config.API_URL}/projects`;
 const LIST_USERS = `${config.API_URL}/users`;
@@ -27,6 +30,7 @@ const LIST_SERVICES = `${config.API_URL}/services`;
 const LIST_PLAN_SERVICES = `${config.API_URL}/plan-services`;
 const LIST_STATUS = `${config.API_URL}/status`;
 const LIST_MAINTENANCE_PERIOD = `${config.API_URL}/maintenance-period`;
+const REPORT = `${config.API_URL}/reports/project`;
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -61,6 +65,8 @@ export default function UpdateProjects() {
   const [listStatus, setListStatus] = useState([]);
   const [listMaintenancePeriod, setListMaintenancePeriod] = useState([]);
 
+  const [listReports, setListReports] = useState([]);
+
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -71,6 +77,7 @@ export default function UpdateProjects() {
     loadListPlanServices();
     loadListStatus();
     loadListMaintenancePeriod();
+    loadListReportByID();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -129,6 +136,52 @@ export default function UpdateProjects() {
     const result = await apiGet(`${LIST_MAINTENANCE_PERIOD}`);
     setListMaintenancePeriod(result.data);
   };
+
+  const loadListReportByID = async () => {
+    const result = await apiGetById(`${REPORT}`, currentId);
+    setListReports(result.data);
+  };
+
+  const columns = [
+    {
+      field: 'action',
+      headerName: 'Hành động',
+      width: 120,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={'/dashboard/reports/detail-reports/' + params.row._id}>
+              <IconEdit />
+            </Link>
+          </>
+        );
+      }
+    },
+    { field: 'code', headerName: 'Mã hiệu', width: 120 },
+    { field: 'times_issued', headerName: 'Lần ban hành', width: 150 },
+    { field: 'name', headerName: 'Tên báo cáo', width: 300 },
+    {
+      field: 'project_id',
+      headerName: 'Tên công trình',
+      width: 300,
+      renderCell: (params) => {
+        return <span> {params.row.project_id.name}</span>;
+      }
+    },
+    {
+      field: 'test_date',
+      headerName: 'Ngày kiểm tra',
+      width: 270,
+      renderCell: (params) => {
+        return (
+          <span>
+            Từ ngày {getCreatedAt(params.row.register_test_date)} <br /> Đến ngày {getCreatedAt(params.row.expired_test_date)}
+          </span>
+        );
+      }
+    },
+    { field: 'createdAt', headerName: 'Ngày tạo', valueGetter: (params) => getCreatedAt(params.row.createdAt), width: 180 }
+  ];
 
   const handleUserChange = (event, value) => {
     setUserId(
@@ -376,6 +429,32 @@ export default function UpdateProjects() {
                 Cập nhật
               </Button>
             </Item>
+          </Grid>
+        </Box>
+      </MainCard>
+      <MainCard title="Báo cáo" sx={{ mt: 3 }}>
+        <Box component="form" sx={{ flexGrow: 1 }} noValidate autoComplete="off">
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              {listReports.length !== 0 ? (
+                <DataGrid
+                  rows={listReports}
+                  columns={columns}
+                  getRowId={(row) => row._id}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 20
+                      }
+                    }
+                  }}
+                  pageSizeOptions={[20]}
+                  checkboxSelection
+                />
+              ) : (
+                ''
+              )}
+            </Grid>
           </Grid>
         </Box>
       </MainCard>
