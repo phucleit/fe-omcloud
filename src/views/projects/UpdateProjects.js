@@ -30,7 +30,8 @@ const LIST_SERVICES = `${config.API_URL}/services`;
 const LIST_PLAN_SERVICES = `${config.API_URL}/plan-services`;
 const LIST_STATUS = `${config.API_URL}/status`;
 const LIST_MAINTENANCE_PERIOD = `${config.API_URL}/maintenance-period`;
-const REPORT = `${config.API_URL}/reports/project`;
+const REPORT_PROJECT = `${config.API_URL}/reports/project`;
+const REPORT_STATUS = `${config.API_URL}/reports/status`;
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -58,6 +59,8 @@ export default function UpdateProjects() {
   const [servicePlanId, setServicePlanId] = useState('');
   const [statusId, setStatusId] = useState('');
   const [maintenancePeriodId, setMaintenancePeriodId] = useState('');
+
+  const [statusName, setStatusName] = useState('');
 
   const [listUser, setListUser] = useState([]);
   const [listServices, setListServices] = useState([]);
@@ -138,8 +141,19 @@ export default function UpdateProjects() {
   };
 
   const loadListReportByID = async () => {
-    const result = await apiGetById(`${REPORT}`, currentId);
+    const result = await apiGetById(`${REPORT_PROJECT}`, currentId);
     setListReports(result.data);
+  };
+
+  const handleStatusChange = (event) => {
+    const selectedStatusId = event.target.value;
+    setStatusId(selectedStatusId);
+
+    const selectedStatus = listStatus.find((item) => item._id === selectedStatusId);
+
+    if (selectedStatus) {
+      setStatusName(selectedStatus.name);
+    }
   };
 
   const columns = [
@@ -246,6 +260,16 @@ export default function UpdateProjects() {
       status_id: statusId,
       maintenance_period_id: maintenancePeriodId
     };
+
+    if (statusName == 'Đã hoàn thành') {
+      const status = {
+        status: 2
+      };
+
+      apiUpdate(`${REPORT_STATUS}`, currentId, status)
+        .then(() => {})
+        .catch((error) => console.log(error));
+    }
 
     apiUpdate(`${PROJECTS}`, currentId, updateProjects)
       .then(() => {
@@ -393,7 +417,7 @@ export default function UpdateProjects() {
               <Item>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Trạng thái</InputLabel>
-                  <Select id="statusId" value={statusId} label="Chọn trạng thái..." onChange={(e) => setStatusId(e.target.value)}>
+                  <Select id="statusId" value={statusId} label="Chọn trạng thái..." onChange={handleStatusChange}>
                     {listStatus.map((item) => (
                       <MenuItem key={item._id} value={item._id}>
                         {item.name}
