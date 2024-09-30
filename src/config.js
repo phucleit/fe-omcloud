@@ -5,8 +5,8 @@ const config = {
   defaultPath: '',
   fontFamily: `'Roboto', sans-serif`,
   borderRadius: 12,
-  API_URL: 'http://localhost:5600'
-  // API_URL: 'https://backend.om.himep.vn'
+  // API_URL: 'http://localhost:5600'
+  API_URL: 'https://backend.om.himep.vn'
 };
 
 export default config;
