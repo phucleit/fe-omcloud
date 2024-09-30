@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { DataGrid } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
 
 import MainCard from 'ui-component/cards/MainCard';
 
@@ -48,6 +49,7 @@ export default function DetailReports() {
   const [level, setLevel] = useState('');
   const [hiconComment, setHiconComment] = useState('');
   const [customerComment, setCustomerComment] = useState('');
+  const [status, setStatus] = useState('');
 
   const [dataProjects, setDataProjects] = useState([]);
 
@@ -72,6 +74,7 @@ export default function DetailReports() {
     setLevel(result.data.level);
     setHiconComment(result.data.hicon_comment);
     setCustomerComment(result.data.customer_comment);
+    setStatus(result.data.status);
   };
 
   const loadListProjects = async () => {
@@ -364,6 +367,17 @@ export default function DetailReports() {
                 </FormControl>
               </Item>
             </Grid>
+            {status == 2 ? (
+              <Grid item xs={12}>
+                <Item>
+                  <Button variant="contained" size="medium" onClick="">
+                    Xuất báo cáo
+                  </Button>
+                </Item>
+              </Grid>
+            ) : (
+              ''
+            )}
           </Grid>
         </Box>
       </MainCard>
