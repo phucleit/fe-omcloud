@@ -42,6 +42,7 @@ const UpdateProjects = Loadable(lazy(() => import('views/projects/UpdateProjects
 const ListReports = Loadable(lazy(() => import('views/reports/ListReports')));
 const AddReports = Loadable(lazy(() => import('views/reports/AddReports')));
 const DetailReports = Loadable(lazy(() => import('views/reports/DetailReports')));
+const PreviewReports = Loadable(lazy(() => import('views/reports/PreviewReports')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -176,6 +177,10 @@ const MainRoutes = {
         {
           path: 'detail-reports/:id',
           element: <DetailReports />
+        },
+        {
+          path: 'preview-reports/:id',
+          element: <PreviewReports />
         }
       ]
     }

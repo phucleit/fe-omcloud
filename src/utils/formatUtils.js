@@ -128,6 +128,14 @@ export function getExpiredAt(params) {
   }
 }
 
+export function getExportDate(params) {
+  if (params) {
+    var timeStamp = params;
+    var date = new Date(timeStamp).toLocaleDateString('vi-VI');
+    return date;
+  }
+}
+
 export function convertPrice(price) {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 }

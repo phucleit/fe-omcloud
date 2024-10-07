@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -14,9 +15,6 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
-
-import * as XLSX from 'xlsx';
-import { saveAs } from 'file-saver';
 
 import MainCard from 'ui-component/cards/MainCard';
 
@@ -36,6 +34,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function DetailReports() {
+  let navigate = useNavigate();
   const paramId = useParams();
   const currentId = paramId.id;
 
@@ -104,91 +103,10 @@ export default function DetailReports() {
     { field: 'quantity', headerName: 'Số lượng', width: 300 }
   ];
 
-  // const handleExport = () => {
-  //   const taskData = tasks.map((task) => ({
-  //     'Thiết bị': task.name,
-  //     'Hình ảnh': `${API}${task.image}`,
-  //     'Mô tả công việc': task.description
-  //   }));
-
-  //   const itemData = items.map((item) => ({
-  //     'Vật tư, Thiết bị': item.name,
-  //     'Đơn vị': item.unit,
-  //     'Số lượng': item.quantity
-  //   }));
-
-  //   const combinedData = [];
-
-  //   taskData.forEach((task, index) => {
-  //     combinedData[index] = { ...task };
-  //   });
-
-  //   itemData.forEach((item, index) => {
-  //     if (!combinedData[index]) {
-  //       combinedData[index] = {};
-  //     }
-  //     combinedData[index] = { ...combinedData[index], ...item };
-  //   });
-
-  //   const worksheet = XLSX.utils.json_to_sheet(combinedData);
-  //   const workbook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Report');
-
-  //   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  //   const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
-
-  //   saveAs(data, `Report_${code}.xlsx`);
-  // };
-
-  const handleExport = () => {
-    // Prepare task data with specific headers for columns A-C
-    const taskData = tasks.map((task) => ({
-      'Thiết bị': task.name,
-      'Hình ảnh': `${API}${task.image}`,
-      'Mô tả công việc': task.description
-    }));
-  
-    // Prepare item data with headers for columns D-F
-    const itemData = items.map((item) => ({
-      'Vật tư, Thiết bị': item.name,
-      'Đơn vị': item.unit,
-      'Số lượng': item.quantity
-    }));
-  
-    // Combined data to merge taskData and itemData in one sheet
-    const combinedData = [];
-  
-    // Add taskData (columns A-C)
-    taskData.forEach((task, index) => {
-      combinedData[index] = { 'Thiết bị': task['Thiết bị'], 'Hình ảnh': task['Hình ảnh'], 'Mô tả công việc': task['Mô tả công việc'] };
-    });
-  
-    // Add itemData (columns D-F), keeping them in the same row as taskData
-    itemData.forEach((item, index) => {
-      if (!combinedData[index]) {
-        combinedData[index] = {};  // Ensure the row exists if taskData is shorter than itemData
-      }
-      combinedData[index] = {
-        ...combinedData[index], // Merge with taskData
-        'Vật tư, Thiết bị': item['Vật tư, Thiết bị'],
-        'Đơn vị': item['Đơn vị'],
-        'Số lượng': item['Số lượng']
-      };
-    });
-  
-    // Specify column order in the worksheet
-    const worksheet = XLSX.utils.json_to_sheet(combinedData, { header: ['Thiết bị', 'Hình ảnh', 'Mô tả công việc', 'Vật tư, Thiết bị', 'Đơn vị', 'Số lượng'] });
-  
-    // Create a new workbook and append the worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Report');
-  
-    // Write the workbook to an Excel file
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
-  
-    // Save the file using the saveAs function
-    saveAs(data, `Report_${code}.xlsx`);
+  const handleExportReport = (e) => {
+    e.preventDefault();
+    navigate(`/dashboard/reports/preview-reports/${currentId}`);
+    // history.push(`/app/preview-report/${currentReportId}`);
   };
 
   return (
@@ -460,8 +378,8 @@ export default function DetailReports() {
             {status == 2 ? (
               <Grid item xs={12}>
                 <Item>
-                  <Button variant="contained" size="medium" onClick={handleExport}>
-                    Xuất báo cáo
+                  <Button variant="contained" size="medium" onClick={handleExportReport}>
+                    Xem báo cáo
                   </Button>
                 </Item>
               </Grid>
