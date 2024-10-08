@@ -144,7 +144,7 @@ export default function AddGroupUser() {
                 </FormControl>
               </Item>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6} md={3}>
               <Item>Tài khoản</Item>
               <Box component="section">
                 <FormGroup>
@@ -158,7 +158,7 @@ export default function AddGroupUser() {
                 </FormGroup>
               </Box>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6} md={3}>
               <Item>Dịch vụ</Item>
               <Box component="section">
                 <FormGroup>
@@ -172,7 +172,7 @@ export default function AddGroupUser() {
                 </FormGroup>
               </Box>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6} md={3}>
               <Item>Loại dịch vụ</Item>
               <Box component="section">
                 <FormGroup>
@@ -186,7 +186,7 @@ export default function AddGroupUser() {
                 </FormGroup>
               </Box>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6} md={3}>
               <Item>Trạng thái</Item>
               <Box component="section">
                 <FormGroup>
@@ -200,7 +200,7 @@ export default function AddGroupUser() {
                 </FormGroup>
               </Box>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6} md={3}>
               <Item>Công trình</Item>
               <Box component="section">
                 <FormGroup>
@@ -214,7 +214,7 @@ export default function AddGroupUser() {
                 </FormGroup>
               </Box>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6} md={3}>
               <Item>Báo cáo</Item>
               <Box component="section">
                 <FormGroup>

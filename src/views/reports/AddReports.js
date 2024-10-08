@@ -216,7 +216,7 @@ export default function AddReports() {
       <MainCard title="Thêm mới">
         <Box component="form" sx={{ flexGrow: 1 }} noValidate autoComplete="off">
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Mã hiệu</InputLabel>
@@ -231,7 +231,7 @@ export default function AddReports() {
                 </FormControl>
               </Item>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Item style={{ paddingTop: '4px' }}>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel className="customText">Ngày ban hành</InputLabel>
@@ -243,7 +243,7 @@ export default function AddReports() {
                 </FormControl>
               </Item>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Lần ban hành</InputLabel>
@@ -258,7 +258,7 @@ export default function AddReports() {
                 </FormControl>
               </Item>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Tên báo cáo</InputLabel>
@@ -273,7 +273,7 @@ export default function AddReports() {
                 </FormControl>
               </Item>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Tần suất bảo dưỡng</InputLabel>
@@ -292,7 +292,7 @@ export default function AddReports() {
                 </FormControl>
               </Item>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Tên công trình</InputLabel>
@@ -306,14 +306,14 @@ export default function AddReports() {
                 </FormControl>
               </Item>
             </Grid>
-            <Grid item xs={6} className="registeredAt">
+            <Grid item xs={12} md={6} className="registeredAt">
               <Item style={{ paddingTop: '4px' }}>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Ngày kiểm tra</InputLabel>
                 </FormControl>
               </Item>
               <Grid container item xs={12} spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Item style={{ paddingTop: '4px' }}>
                     <FormControl variant="standard" fullWidth>
                       <InputLabel className="customText">Từ ngày</InputLabel>
@@ -325,7 +325,7 @@ export default function AddReports() {
                     </FormControl>
                   </Item>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Item style={{ paddingTop: '4px' }}>
                     <FormControl variant="standard" fullWidth>
                       <InputLabel className="customText">Đến ngày</InputLabel>
@@ -339,19 +339,19 @@ export default function AddReports() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={12}>
               <Item>
                 <Typography variant="h4">Thông tin bảo trì</Typography>
                 <TableTasks rowsData={tasks} deleteTableRows={deleteTableTasks} handleChange={handleChangeTableTasks} addRow={addTasks} />
               </Item>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={12}>
               <Item>
                 <Typography variant="h4">Tổng hợp vật tư bị thay thế</Typography>
                 <TableItems rowsData={items} deleteTableRows={deleteTableItems} handleChange={handleChangeTableItems} addRow={addItems} />
               </Item>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Mức độ hài lòng</InputLabel>
@@ -364,8 +364,8 @@ export default function AddReports() {
                 </FormControl>
               </Item>
             </Grid>
-            <Grid item xs={6}></Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}></Grid>
+            <Grid item xs={12} md={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Nhận xét của Hicon M-E</InputLabel>
@@ -382,7 +382,7 @@ export default function AddReports() {
                 </FormControl>
               </Item>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Item>
                 <FormControl variant="standard" fullWidth>
                   <InputLabel>Nhận xét của khách hàng</InputLabel>
