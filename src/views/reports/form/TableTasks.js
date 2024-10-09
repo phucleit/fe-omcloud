@@ -16,15 +16,30 @@ const Div = styled('div')(({ theme }) => ({
 }));
 
 function TableTasks({ rowsData, deleteTableRows, handleChange, addRow }) {
+  // const openImageEditor = (index, image) => {
+  //   Painterro({
+  //     saveHandler: (imageData) => {
+  //       const updatedTasks = [...rowsData];
+  //       updatedTasks[index].image = imageData.asDataURL();
+  //       const imageBlob = imageData.asDataURL();
+  //       handleChange(index, { target: { name: 'image', value: imageBlob } });
+  //     }
+  //   }).show(image ? { src: image } : undefined);
+  // };
+
   const openImageEditor = (index, image) => {
-    Painterro({
+    const editor = Painterro({
       saveHandler: (imageData) => {
         const updatedTasks = [...rowsData];
         updatedTasks[index].image = imageData.asDataURL();
         const imageBlob = imageData.asDataURL();
         handleChange(index, { target: { name: 'image', value: imageBlob } });
+
+        editor.hide();
       }
-    }).show(image ? { src: image } : undefined);
+    });
+
+    editor.show(image ? { src: image } : undefined);
   };
 
   return (

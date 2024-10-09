@@ -72,7 +72,7 @@ export default function AddReports() {
 
   useEffect(() => {
     if (dataRoles.length > 0) {
-      const filteredAdd = dataRoles.filter((role_add) => role_add.function_id === '667467eb263fb998b9925d3a');
+      const filteredAdd = dataRoles.filter((role_add) => role_add.function_id === '667467eb263fb998b9925d47');
       if (filteredAdd.length > 0) {
         setPermissionAdd(true);
       } else {
@@ -340,14 +340,18 @@ export default function AddReports() {
               </Grid>
             </Grid>
             <Grid item xs={12} md={12}>
-              <Item>
+              <Item style={{ mb: 5 }}>
                 <Typography variant="h4">Thông tin bảo trì</Typography>
+              </Item>
+              <Item>
                 <TableTasks rowsData={tasks} deleteTableRows={deleteTableTasks} handleChange={handleChangeTableTasks} addRow={addTasks} />
               </Item>
             </Grid>
             <Grid item xs={12} md={12}>
-              <Item>
+              <Item style={{ mb: 5 }}>
                 <Typography variant="h4">Tổng hợp vật tư bị thay thế</Typography>
+              </Item>
+              <Item>
                 <TableItems rowsData={items} deleteTableRows={deleteTableItems} handleChange={handleChangeTableItems} addRow={addItems} />
               </Item>
             </Grid>

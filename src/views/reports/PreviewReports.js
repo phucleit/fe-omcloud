@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import { PDFExport } from '@progress/kendo-react-pdf';
 
 import config from '../../config';
-import { apiGetById, getExportDate } from '../../utils/formatUtils';
+import { apiGetById, getExportDate, getRoles } from '../../utils/formatUtils';
 
 const REPORTS = `${config.API_URL}/reports`;
 const API = `${config.API_URL}`;
@@ -15,6 +15,9 @@ const API = `${config.API_URL}`;
 export default function PreviewReports() {
   const paramId = useParams();
   const currentId = paramId.id;
+
+  const [dataRoles, setDataRoles] = useState([]);
+  const [permissionExport, setPermissionExport] = useState(false);
 
   const [data, setData] = useState('');
   const [code, setCode] = useState('');
@@ -26,9 +29,26 @@ export default function PreviewReports() {
   const formattedDate = `Ngày ${day}, Tháng ${month}, Năm ${year}`;
 
   useEffect(() => {
+    loadListRoles();
     loadDetailReports();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (dataRoles.length > 0) {
+      const filteredExport = dataRoles.filter((role_add) => role_add.function_id === '667467eb263fb998b9925d48');
+      if (filteredExport.length > 0) {
+        setPermissionExport(true);
+      } else {
+        setPermissionExport(false);
+      }
+    }
+  }, [dataRoles]);
+
+  const loadListRoles = async () => {
+    const result = await getRoles();
+    setDataRoles(result.data);
+  };
 
   const loadDetailReports = async () => {
     const result = await apiGetById(`${REPORTS}`, currentId);
@@ -233,9 +253,13 @@ export default function PreviewReports() {
             </div>
           </div>
         </PDFExport>
-        <Button variant="contained" size="medium" onClick={handleExportWithComponent}>
-          Xuất báo cáo
-        </Button>
+        {permissionExport ? (
+          <Button variant="contained" size="medium" onClick={handleExportWithComponent}>
+            Xuất báo cáo
+          </Button>
+        ) : (
+          ''
+        )}
       </MainCard>
     </>
   );
