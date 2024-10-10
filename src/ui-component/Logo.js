@@ -1,7 +1,7 @@
-import logo from './logo-hcme-full.png';
+import logo from './logo_himep.png';
 
 const Logo = () => {
-  return <img src={logo} alt="omcloud" width="150" />;
+  return <img src={logo} alt="omcloud" width="70" />;
 };
 
 export default Logo;

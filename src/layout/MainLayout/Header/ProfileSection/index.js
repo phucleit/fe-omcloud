@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -44,6 +45,8 @@ const ProfileSection = () => {
   const customization = useSelector((state) => state.customization);
   const dispatch = useDispatch();
   let navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const display_name = Cookies.get('display_name');
 
@@ -156,7 +159,7 @@ const ProfileSection = () => {
                   <Box sx={{ p: 2 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Xin Chào,</Typography>
+                        <Typography variant="h4">{t('hi')},</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
                           {display_name}
                         </Typography>
@@ -186,7 +189,7 @@ const ProfileSection = () => {
                           <ListItemIcon>
                             <IconLogout stroke={1.5} size="1.3rem" />
                           </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
+                          <ListItemText primary={<Typography variant="body2">{t('log-out')}</Typography>} />
                         </ListItemButton>
                       </List>
                     </Box>

@@ -44,6 +44,8 @@ const AddReports = Loadable(lazy(() => import('views/reports/AddReports')));
 const DetailReports = Loadable(lazy(() => import('views/reports/DetailReports')));
 const PreviewReports = Loadable(lazy(() => import('views/reports/PreviewReports')));
 
+// const ListLogs = Loadable(lazy(() => import('views/logs/ListLogs')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -142,6 +144,17 @@ const MainRoutes = {
         }
       ]
     },
+
+    // logs
+    // {
+    //   path: 'logs',
+    //   children: [
+    //     {
+    //       path: 'list-logs',
+    //       element: <ListLogs />
+    //     }
+    //   ]
+    // },
 
     // công trình
     {

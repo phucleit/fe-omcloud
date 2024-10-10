@@ -26,6 +26,13 @@ const projects = {
           url: '/dashboard/status/list-status',
           breadcrumbs: false
         }
+        // {
+        //   id: 'list-logs',
+        //   title: 'Danh sách log',
+        //   type: 'item',
+        //   url: '/dashboard/logs/list-logs',
+        //   breadcrumbs: false
+        // }
       ]
     }
   ]

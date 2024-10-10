@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
+// import { useTranslation } from 'react-i18next';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Box, ButtonBase } from '@mui/material';
+
+// import MenuItem from '@mui/material/MenuItem';
+// import Select from '@mui/material/Select';
 
 // project imports
 import LogoSection from '../LogoSection';
@@ -16,6 +20,12 @@ import { IconMenu2 } from '@tabler/icons';
 
 const Header = ({ handleLeftDrawerToggle }) => {
   const theme = useTheme();
+  // const { t } = useTranslation();
+
+  // const { i18n } = useTranslation();
+  // const handleLanguage = (lang) => {
+  //   i18n.changeLanguage(lang);
+  // };
 
   return (
     <>
@@ -61,6 +71,12 @@ const Header = ({ handleLeftDrawerToggle }) => {
 
       {/* notification & profile */}
       <ProfileSection />
+
+      {/* <Box sx={{ mr: 3 }} />
+      <Select defaultValue="vi" onChange={(e) => handleLanguage(e.target.value)}>
+        <MenuItem value="vi">{t('vietnamese')}</MenuItem>
+        <MenuItem value="en">{t('english')}</MenuItem>
+      </Select> */}
     </>
   );
 };
