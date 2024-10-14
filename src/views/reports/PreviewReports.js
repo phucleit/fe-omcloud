@@ -9,6 +9,8 @@ import { PDFExport } from '@progress/kendo-react-pdf';
 import config from '../../config';
 import { apiGetById, getExportDate, getRoles } from '../../utils/formatUtils';
 
+import ConvertBaseUrl from './ConvertBaseUrl';
+
 const REPORTS = `${config.API_URL}/reports`;
 const API = `${config.API_URL}`;
 
@@ -174,7 +176,7 @@ export default function PreviewReports() {
                   <td>{e.name}</td>
                   <td style={{ width: '300px' }}>
                     <a key={e._id} style={{ margin: '5px' }} href={`${API}${e.image}`} target="_blank" rel="noreferrer">
-                      Xem hình
+                      <ConvertBaseUrl imageUrl={`${API}${e.image}`} />
                     </a>
                   </td>
                   <td>{e.description}</td>

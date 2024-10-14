@@ -151,9 +151,13 @@ export default function AddReports() {
       return;
     }
 
-    if (timesIssued == '') {
+    if (timesIssued === '') {
       alert('Vui lòng nhập lần ban hành!');
       return;
+    } else if (isNaN(timesIssued)) {
+      alert('Lần ban hành phải là số!');
+    } else if (Number(timesIssued) <= 0) {
+      alert('Lần ban hành phải lớn hơn 0!');
     }
 
     if (name == '') {
